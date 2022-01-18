@@ -12,11 +12,11 @@ ___x_cmd_python3_path_linux()(
     esac
 
     local MINICONDA_NAME=Miniconda3-py39_4.10.3-Linux-${MINICONDA_PLATFORM}
-    X_PYTHON_PATH="$X_CMD_SRC_PATH/.bin/x-cmd/python"
+    local ___X_PYTHON_PATH="$___X_CMD_ROOT/.bin/x-cmd/python"
 
-    if [ ! -d "$X_PYTHON_PATH/${MINICONDA_NAME}" ]; then
-        mkdir -p "$X_PYTHON_PATH"
-        cd "$X_PYTHON_PATH" || return 1
+    if [ ! -d "$___X_PYTHON_PATH/${MINICONDA_NAME}" ]; then
+        mkdir -p "$___X_PYTHON_PATH"
+        cd "$___X_PYTHON_PATH" || return 1
         local url="https://repo.anaconda.com/miniconda"
         if [ "${___X_CMD_IN_CHINA_NET:-0}" -eq 1 ]; then
             url="https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda"
@@ -30,7 +30,7 @@ ___x_cmd_python3_path_linux()(
         fi
     fi
 
-    printf "%s" "$X_PYTHON_PATH/${MINICONDA_NAME}"
+    printf "%s" "$___X_PYTHON_PATH/${MINICONDA_NAME}"
 )
 
 ___x_cmd_python3_path_windows()(
@@ -42,10 +42,11 @@ ___x_cmd_python3_path_windows()(
     esac
 
     local MINICONDA_NAME=Miniconda3-py39_4.10.3-Linux-${MINICONDA_PLATFORM}
-    X_PYTHON_PATH="$X_CMD_SRC_PATH/.bin/x-cmd/python"
-    if [ ! -d "$X_PYTHON_PATH/${MINICONDA_NAME}" ]; then
-        mkdir -p "$X_PYTHON_PATH"
-        cd "$X_PYTHON_PATH" || return 1
+    local ___X_PYTHON_PATH="$___X_CMD_ROOT/.bin/x-cmd/python"
+
+    if [ ! -d "$___X_PYTHON_PATH/${MINICONDA_NAME}" ]; then
+        mkdir -p "$___X_PYTHON_PATH"
+        cd "$___X_PYTHON_PATH" || return 1
         local url="https://repo.anaconda.com/miniconda"
         if [ "${XRC_CHINA_NET:-0}" -eq 1 ]; then
             url="https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda"
@@ -54,7 +55,7 @@ ___x_cmd_python3_path_windows()(
             chmod +x "${MINICONDA_NAME}.sh" &&
                 {
                     local p
-                    p="$(xrc which xcmd/_v0/python_bat.bat)"
+                    p="$(xrc which python/lib/python_bat.bat)"
                     eval "cmd.exe" "$p"
                 } 1>&2
             # TODO: remove the file: "${MINICONDA_NAME}.sh"
@@ -63,7 +64,7 @@ ___x_cmd_python3_path_windows()(
         fi
     fi
 
-    printf "%s" "$X_PYTHON_PATH/Miniconda"
+    printf "%s" "$___X_PYTHON_PATH/Miniconda"
 )
 
 ___x_cmd_python3_path(){
@@ -138,8 +139,8 @@ _python_arg(){
     local all="$*"
 
     local p
-    p="$(xrc which x-cmd/_v0/python_argparse.awk)"
-    # p="$(xrc which ./_v0/python_argparse.awk)"
+    p="$(xrc which python/lib/python_argparse.awk)"
+    # p="$(xrc which ./python_argparse.awk)"
 
     awk \
         -v ARG_SEP="$IFS" \
