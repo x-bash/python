@@ -37,7 +37,7 @@ ___x_cmd_python3_path_windows()(
     local MINICONDA_PLATFORM
     case "$(os arch)" in
         aarch64)    MINICONDA_PLATFORM=aarch64        ;;
-        x64)        MINICONDA_PLATFORM=x86_64            ;;
+        x64)        MINICONDA_PLATFORM=x86_64         ;;
         *)          return 1 ;;
     esac
 
