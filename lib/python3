@@ -2,6 +2,7 @@
 
 # Section: util, ___x_cmd_python_exec_or_download, _python_arg
 
+# TODO: Wait 'x exec pip=[version-not-install]' to remove this function
 ___x_cmd_python_exec_or_download(){
     local cmd="$1" ; shift
 
