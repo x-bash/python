@@ -1,9 +1,9 @@
 # shellcheck shell=sh disable=SC3043,SC2034
 
-# Section: util, ___x_cmd_python_exec_or_download, _python_arg
+# Section: util, ___x_cmd_python_exec_default, _python_arg
 
 # TODO: Wait 'x exec pip=[version-not-install]' to remove this function
-___x_cmd_python_exec_or_download(){
+___x_cmd_python_exec_default(){
     local cmd="$1" ; shift
 
     if command -v "$cmd" > /dev/null ; then
@@ -14,8 +14,9 @@ ___x_cmd_python_exec_or_download(){
     ___x_cmd_env_main download python
 
     eval "
-___x_cmd_${cmd}_bin(){
-    ___x_cmd_env_main exec $cmd \"\$@\"
+___x_cmd_python_exec_default(){
+    local cmd=\"\$1\" ; shift
+    ___x_cmd_env_main exec \$cmd \"\$@\"
 }"
 
     ___x_cmd_env_main exec "$cmd" "$@"
@@ -40,12 +41,8 @@ A
 
 # Section: pip3
 
-___x_cmd_pip3_bin(){
-    ___x_cmd_python_exec_or_download pip3 "$@"
-}
-
 ___x_cmd_pip3(){
-    ___x_cmd_pip3_bin "$@"
+    ___x_cmd_python_exec_default pip3 "$@"
 }
 
 # EndSection
@@ -53,7 +50,7 @@ ___x_cmd_pip3(){
 # Section: python3
 
 ___x_cmd_python3_bin(){
-    ___x_cmd_python_exec_or_download python3 "$@"
+    ___x_cmd_python_exec_default python3 "$@"
 }
 
 ___x_cmd_python3(){
