@@ -1,35 +1,23 @@
 # shellcheck shell=sh disable=SC3043,SC2034
 
-# TODO: Should merge ___x_cmd_python3_bin and ___x_cmd_pip3 function
-___x_cmd_python3_bin(){
-    if command -v python3 > /dev/null ; then
-        python3 "$@"
+# Section: util, ___x_cmd_python_exec_or_download, _python_arg
+
+___x_cmd_python_exec_or_download(){
+    local cmd="$1" ; shift
+
+    if command -v "$cmd" > /dev/null ; then
+        "$cmd" "$@"
         return
     fi
 
     ___x_cmd_env_main download python
 
     eval "
-___x_cmd_python3_bin(){
-    ___x_cmd_env_main exec python3 \"\$@\"
+___x_cmd_${cmd}_bin(){
+    ___x_cmd_env_main exec $cmd \"\$@\"
 }"
 
-    ___x_cmd_python3_bin "$@"
-}
-
-___x_cmd_pip3(){
-    if command -v pip3 > /dev/null ; then
-        pip3 "$@"
-        return
-    fi
-
-    ___x_cmd_env_main download python
-    eval "
-___x_cmd_pip3(){
-    ___x_cmd_env_main exec pip3 \"\$@\"
-}"
-
-    ___x_cmd_pip3 "$@"
+    ___x_cmd_env_main exec "$cmd" "$@"
 }
 
 _python_arg(){
@@ -45,6 +33,26 @@ _python_arg(){
         -f "$p" <<A
 $all
 A
+}
+
+# EndSection
+
+# Section: pip3
+
+___x_cmd_pip3_bin(){
+    ___x_cmd_python_exec_or_download pip3 "$@"
+}
+
+___x_cmd_pip3(){
+    ___x_cmd_pip3_bin "$@"
+}
+
+# EndSection
+
+# Section: python3
+
+___x_cmd_python3_bin(){
+    ___x_cmd_python_exec_or_download python3 "$@"
 }
 
 ___x_cmd_python3(){
@@ -68,6 +76,8 @@ ___x_cmd_python3(){
             ;;
     esac
 }
+
+# EndSection
 
 # _python_arg -W aaa -O a.py "a  c" b c
 
